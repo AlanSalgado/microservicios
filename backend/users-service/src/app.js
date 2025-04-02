@@ -4,13 +4,12 @@ const userRoutes = require("./routes/userRoutes");
 const { connectDB } = require("./config/db");
 
 const app = express();
-
-// Middleware
-app.use(express.json());
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Rutas de Usuarios
-app.use("/users", userRoutes);
+app.use("/", userRoutes);
 
 // Conectar a la base de datos de usuarios
 connectDB();
