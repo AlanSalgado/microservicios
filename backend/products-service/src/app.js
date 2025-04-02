@@ -1,0 +1,18 @@
+const express = require("express");
+const cors = require("cors");
+const productRoutes = require("./routes/productRoutes");
+const { connectDB } = require("./config/db");
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+// Rutas de Productos
+app.use("/products", productRoutes);
+
+// Conectar a la base de datos de productos
+connectDB();
+
+module.exports = app;

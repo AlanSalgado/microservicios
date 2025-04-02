@@ -34,7 +34,7 @@ const createProduct = async(req, res) => {
         request.input("price", sql.Decimal, price);
         request.input("stock", sql.Int, stock);
 
-        await request.query("INSER INTO Products (name, price, stock) VALUES (@name, @price, @stock)");
+        await request.query("INSERT INTO Products (name, price, stock) VALUES (@name, @price, @stock)");
         res.status(201).json({ message: "Producto Creado" });
     } catch(error) {
         res.status(500).json({ error: error.message });
