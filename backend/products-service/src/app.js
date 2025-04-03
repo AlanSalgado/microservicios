@@ -4,8 +4,9 @@ const productRoutes = require("./routes/productRoutes");
 const { connectDB } = require("./config/db");
 
 const app = express();
+
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Rutas de Productos

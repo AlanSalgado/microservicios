@@ -1,7 +1,4 @@
 const { sql } = require("../config/db");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const getAllUsers = async(req, res) => {
     try {
@@ -30,61 +27,16 @@ const getUserById = async(req, res) => {
 };
 
 const createUser = async(req, res) => {
+    console.log("CREATE USER");
     const { name, email, password } = req.body;
     try {
-        // Cifras la pass
-        const salt = await bcrypt.genSalt(10);
-        const hashPass = await bcrypt.hash(password, salt);
-
         const request = new sql.Request();
         request.input("name", sql.NVarChar, name);
         request.input("email", sql.NVarChar, email);
-        request.input("password", sql.NVarChar, hashPass);
+        request.input("password", sql.NVarChar, password);
 
         await request.query("INSERT INTO Users (name, email, password) VALUES (@name, @email, @password)");
-
-        // Generar token
-        const token = jwt.sign(
-            { email },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
-        );
-
-        res.status(201).json({ message: "Usuario Creado", token });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-const loginUser = async (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    const { email, password } = req.body;
-
-    try {
-        const request = new sql.Request();
-        request.input("email", sql.NVarChar, email);
-        const result = await request.query("SELECT * FROM Users WHERE email = @email");
-
-        // Verificar que exista el usuario
-        if(result.recordset.length === 0) {
-            return res.status(400).json({ message: "Usuario no encontrado" });
-        }
-
-        // Comparar contraseñas
-        const user = result.recordset[0];
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) {
-            return res.status(400).json({ message: "Contraseña icnorrecta" });
-        }
-
-        // Generar el token
-        const token = jwt.sign(
-            { email: user.email, id: user.id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
-        );
-
-        res.json({ message: "Login exitoso", token });
+        res.status(201).json({ message: "Usuario Creado" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -123,4 +75,4 @@ const deleteUser = async(req, res) => {
     }
 };
 
-module.exports = { getAllUsers, getUserById, createUser, loginUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
