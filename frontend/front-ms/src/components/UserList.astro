@@ -1,0 +1,26 @@
+---
+const response = await fetch("http://localhost:3000/users");
+const users = await response.json();
+---
+
+<section class="p-6 bg-white shadow rounded-lg">
+  <h2 class="text-xl font-semibold mb-4">Lista de Usuarios</h2>
+  <table class="w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border border-gray-300 p-2">ID</th>
+        <th class="border border-gray-300 p-2">Nombre</th>
+        <th class="border border-gray-300 p-2">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users.map((user) => (
+        <tr key={user.id} class="border border-gray-300">
+          <td class="p-2">{user.id}</td>
+          <td class="p-2">{user.name}</td>
+          <td class="p-2">{user.email}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
