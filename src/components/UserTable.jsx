@@ -12,7 +12,7 @@ const UserTable = () => {
       orderable: false,
       data: null,
       defaultContent: '<span> </span>',
-      title: '_', // si quieres que no aparezca encabezado
+      title: '_', 
     },
     { title: 'ID', data: 'id' },
     { title: 'Nombre', data: 'name' },
@@ -62,11 +62,11 @@ const UserTable = () => {
   ];
 
   // Opciones adicionales para DataTables
+  // Configuración personalizada para esta tabla específica
   const options = {
-    // Configuración personalizada para esta tabla específica
     pageLength: 5,
     lengthMenu: [5, 10, 25, 50],
-    order: [[1, 'asc']], // Ordenar por ID ascendente por defecto
+    order: [[1, 'asc']],
     drawCallback: function() {
       // Agregar event listeners a los botones después de que la tabla se ha renderizado
       const table = this.api();
@@ -76,7 +76,7 @@ const UserTable = () => {
         e.stopPropagation();
         const rowData = table.row($(this).closest('tr')).data();
         alert(`Editando: ${rowData.name}`);
-        // Aquí podrías abrir un modal o redirigir a una página de edición
+        // Aquí se puede abrir un modal o redirigir a una página de edición
       });
       
       // Botón de cambiar estado
@@ -84,7 +84,7 @@ const UserTable = () => {
         e.stopPropagation();
         const rowData = table.row($(this).closest('tr')).data();
         alert(`Cambiando estado de: ${rowData.name}`);
-        // Aquí implementarías la lógica para cambiar el estado
+        // Aquí se puede abrir un modal o cambiar el estado
       });
     }
   };

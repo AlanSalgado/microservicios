@@ -17,14 +17,14 @@ import 'pdfmake/build/vfs_fonts';
 window.$ = window.jQuery = $;
 
 const DataTable = ({ 
-  data, 
-  columns, 
-  options = {}, 
-  className = 'display responsive nowrap table table-striped table-bordered table-light',
-  id = 'data-table' 
+  data,           // Datos a mostrar en la tabla
+  columns,        // Columnas de la tabla
+  options = {},   // Opciones para el DtaTable
+  className = 'display responsive nowrap table table-striped table-bordered table-light',   // Clases CSS para la tabla
+  id = 'data-table'   // ID de la tabla
 }) => {
-  const tableRef = useRef(null);
-  const tableInstance = useRef(null);
+  const tableRef = useRef(null);        // Estado para la referencia de la tabla
+  const tableInstance = useRef(null);   // Estado para la instancia de DataTable
 
   useEffect(() => {
     setTimeout(() => {
@@ -35,6 +35,7 @@ const DataTable = ({
           return '<p class="m-0">No hay información adicional disponible.</p>';
         }
       
+        // Dibujado del row hijo (en realidad es una tabla)
         const rows = detailsList.map((detail, i) => `
           <tr>
             <td>${i + 1}</td>
@@ -66,7 +67,7 @@ const DataTable = ({
         responsive: false,
         data: data || [],
         columns: columns || [],
-        dom: 'Bfrtip', // Botones, filtro, procesando, tabla, información, paginación
+        dom: 'Bfrtip', 
         buttons: [
           {
             extend: 'copy',
@@ -103,7 +104,7 @@ const DataTable = ({
       if (!tableInstance.current) {
         tableInstance.current = $(tableRef.current).DataTable(tableOptions);
       
-        // Configurar evento para expandir/colapsar filas hijas
+        // Configurar evento para expandir/colapsar los rows hijos
         $(tableRef.current).on('click', 'td.dt-control', function() {
           const tr = $(this).closest('tr');
           const row = tableInstance.current.row(tr);
@@ -113,7 +114,7 @@ const DataTable = ({
             row.child.hide();
             tr.removeClass('shown');
           } else {
-            // Si la fila hija está oculta, mostrarla
+            // Si la fila hija está oculta, mostrarla. Uso de la función format.
             const rowData = row.data();
             if (rowData && rowData.details) {
               row.child(format(rowData)).show();
